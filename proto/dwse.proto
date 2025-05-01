@@ -1,0 +1,36 @@
+syntax = "proto3";
+package dwse;
+
+service DwseNode {
+  rpc Heartbeat   (HeartbeatRequest) returns (HeartbeatResponse);
+  rpc Election    (ElectionRequest)  returns (ElectionResponse);
+  rpc SubmitTask  (TaskRequest)      returns (TaskResult);
+  rpc ExecuteTask (TaskAssignment)   returns (TaskResult);
+  rpc StealTasks  (StealRequest)     returns (StolenTasks);
+}
+
+message HeartbeatRequest  { int32 leader_id = 1; int32 term = 2; int32 leader_weight = 3; NodeStats stats = 4; }
+message HeartbeatResponse { int32 follower_id = 1; int32 follower_weight = 2; bool ok = 3; NodeStats stats = 4; }
+
+message ElectionRequest   { int32 candidate_id = 1; int32 candidate_weight = 2; }
+message ElectionResponse  { bool ok = 1; int32 responder_id = 2; int32 responder_weight = 3; }
+
+message TaskRequest       { int32 task_id = 1; string payload = 2; string task_type = 3; }
+message TaskAssignment    { int32 task_id = 1; string payload = 2; string task_type = 3; }
+message TaskResult        { int32 task_id = 1; string result  = 2; int32 node_id = 3; }
+
+// Work stealing messages
+message StealRequest      { int32 thief_id = 1; int32 max_tasks = 2; }
+message StolenTasks       { repeated TaskAssignment tasks = 1; }
+
+// Node stats message for sharing performance metrics
+message NodeStats {
+  int32 node_id = 1;
+  int32 queue_length = 2;
+  float cpu_usage = 3;
+  float memory_available = 4;
+  float avg_response_time = 5;
+  int32 tasks_completed = 6;
+  int32 tasks_failed = 7;
+  map<string, float> specialization = 8;  // task_type -> success_rate
+}

@@ -1,0 +1,33 @@
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# Generated proto stubs (run ./scripts/build_proto.sh to regenerate)
+src/dwse_pb2.py
+src/dwse_pb2_grpc.py
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Benchmark results (generated at runtime)
+results/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Reports / presentations / archives (not code)
+*.pdf
+*.pptx
+*.ppt
+*.tar.gz
+*.zip
+
+# Logs
+*.log
