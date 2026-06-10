@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚡ Distributed Work-Stealing Scheduler
+#  Distributed Work-Stealing Scheduler
 
 **Fault-tolerant distributed task engine with peer-elected leader, 8-factor dynamic load balancing, and autonomous work stealing**
 
@@ -16,26 +16,26 @@
 
 ---
 
-## ⚡ Impact at a Glance
+##  Impact at a Glance
 
 <table>
   <tr>
-    <td align="center">🚀<br/><strong>~7× Throughput Gain</strong><br/><sub>156 → 1,160 tasks/sec</sub></td>
-    <td align="center">⏱️<br/><strong>~3 Second Recovery</strong><br/><sub>Automatic leader re-election</sub></td>
-    <td align="center">🧠<br/><strong>8-Factor Scheduler</strong><br/><sub>Live CPU · memory · queue · specialization</sub></td>
-    <td align="center">🔄<br/><strong>Autonomous Work Stealing</strong><br/><sub>Idle nodes rebalance without coordinator</sub></td>
+    <td align="center"><br/><strong>~7× Throughput Gain</strong><br/><sub>156 → 1,160 tasks/sec</sub></td>
+    <td align="center"><br/><strong>~3 Second Recovery</strong><br/><sub>Automatic leader re-election</sub></td>
+    <td align="center"><br/><strong>8-Factor Scheduler</strong><br/><sub>Live CPU · memory · queue · specialization</sub></td>
+    <td align="center"><br/><strong>Autonomous Work Stealing</strong><br/><sub>Idle nodes rebalance without coordinator</sub></td>
   </tr>
   <tr>
-    <td align="center">📡<br/><strong>Heartbeat-as-Gossip</strong><br/><sub>Zero extra protocol overhead</sub></td>
-    <td align="center">👑<br/><strong>Decentralized Election</strong><br/><sub>Bully algorithm by weight</sub></td>
-    <td align="center">🔌<br/><strong>5 gRPC RPCs</strong><br/><sub>Heartbeat · Election · Submit · Execute · Steal</sub></td>
-    <td align="center">📊<br/><strong>Full Experiment Suite</strong><br/><sub>Strong/weak scaling · fairness · recovery</sub></td>
+    <td align="center"><br/><strong>Heartbeat-as-Gossip</strong><br/><sub>Zero extra protocol overhead</sub></td>
+    <td align="center"><br/><strong>Decentralized Election</strong><br/><sub>Bully algorithm by weight</sub></td>
+    <td align="center"><br/><strong>5 gRPC RPCs</strong><br/><sub>Heartbeat · Election · Submit · Execute · Steal</sub></td>
+    <td align="center"><br/><strong>Full Experiment Suite</strong><br/><sub>Strong/weak scaling · fairness · recovery</sub></td>
   </tr>
 </table>
 
 ---
 
-## 📊 Benchmark Results
+##  Benchmark Results
 
 | Metric | Before | After | Gain |
 |--------|--------|-------|------|
@@ -49,7 +49,7 @@
 
 ---
 
-## 🏛️ Architecture
+##  Architecture
 
 ```mermaid
 flowchart TD
@@ -87,7 +87,7 @@ Node 0 bootstraps as leader on startup
   Tie-break: same weight → lower node ID wins
 ```
 
-### 2. 📡 Heartbeat as Gossip Channel
+### 2.  Heartbeat as Gossip Channel
 
 Every heartbeat carries full `NodeStats` — zero extra protocol overhead:
 
@@ -105,7 +105,7 @@ message NodeStats {
 
 This keeps every node's `peer_stats` map current — feeding all scheduling and stealing decisions at 1s granularity.
 
-### 3. 🧠 8-Factor Dynamic Load Balancing
+### 3. 8-Factor Dynamic Load Balancing
 
 With `--advanced-weight`, each node gets a composite score:
 
@@ -117,14 +117,14 @@ Where `weight = calculate_advanced_weight()`:
 
 | Factor | Weight | What It Measures |
 |--------|--------|-----------------|
-| 🖥️ Capacity | **20%** | CPU + memory + bandwidth headroom |
-| ✅ Reliability | **20%** | Task success rate |
-| 📈 History | **15%** | Total tasks completed |
-| ⏱️ Response time | **15%** | Average task execution time |
-| 📋 Queue length | **10%** | Current backlog depth |
-| 🌐 Network distance | **10%** | Estimated hop cost |
-| ⏳ Time decay | **5%** | Recency of activity |
-| 🎯 Specialization | **5%** | Task-type affinity score |
+| Capacity | **20%** | CPU + memory + bandwidth headroom |
+| Reliability | **20%** | Task success rate |
+| History | **15%** | Total tasks completed |
+| Response time | **15%** | Average task execution time |
+| Queue length | **10%** | Current backlog depth |
+| Network distance | **10%** | Estimated hop cost |
+| Time decay | **5%** | Recency of activity |
+| Specialization | **5%** | Task-type affinity score |
 
 ### 4. 🔄 Work Stealing
 
@@ -136,7 +136,7 @@ Idle node (queue < threshold):
   → Stealer weight ↑, victim weight ↓ — self-regulating
 ```
 
-### 5. 💥 Failure Recovery (~3 seconds)
+### 5.  Failure Recovery (~3 seconds)
 
 ```
 Leader killed
@@ -164,7 +164,7 @@ service DwseNode {
 
 ---
 
-## 🚀 Run It
+##  Run It
 
 ### Setup
 
